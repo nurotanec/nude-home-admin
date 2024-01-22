@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
@@ -10,18 +10,26 @@ export default function ProductForm({
   description: existingDescription,
   price: existingPrice,
   images: existingImages,
+  category: existingCategory,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
+  const [category, setCategory] = useState(existingCategory);
   const [price, setPrice] = useState(existingPrice || "");
   const [images, setImages] = useState(existingImages || []);
   const [goToProducts, setGoToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
+  useEffect(() => {
+    axios.get("/api/categories").then((result) => {
+      setCategories(result.data);
+    });
+  }, []);
 
   async function saveProduct(ev) {
     ev.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images, category };
 
     if (_id) {
       await axios.put(`/api/products`, { ...data, _id });
@@ -65,9 +73,23 @@ export default function ProductForm({
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
       />
+      <label>Категория</label>
+      <select value={category} onChange={(ev) => setCategory(ev.target.value)}>
+        <option value={null}>Без категории</option>
+        {categories.length > 0 &&
+          categories.map((c) => (
+            <option key={`option-${c._id}`} value={c._id}>
+              {c.name}
+            </option>
+          ))}
+      </select>
       <label>Фото </label>
       <div className="mb-2 flex flex-wrap gap-1">
-        <ReactSortable list={images} setList={updateImagesOrder} className="flex flex-wrap gap-1">
+        <ReactSortable
+          list={images}
+          setList={updateImagesOrder}
+          className="flex flex-wrap gap-1"
+        >
           {!!images?.length &&
             images.map((link) => (
               <div key={link} className="h-24">
@@ -95,7 +117,7 @@ export default function ProductForm({
               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
             />
           </svg>
-          <div>Upload</div>
+          <div>Загрузить</div>
           <input type="file" onChange={uploadImages} className="hidden" />
         </label>
       </div>
@@ -109,7 +131,7 @@ export default function ProductForm({
       <label>Цена (в KZT)</label>
       <input
         type="number"
-        placeholder="price"
+        placeholder="цена"
         value={price}
         onChange={(ev) => setPrice(ev.target.value)}
       />

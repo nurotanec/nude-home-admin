@@ -6,7 +6,7 @@ import { withSwal } from "react-sweetalert2";
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
   const [name, setName] = useState();
-  const [parentCategory, setParentCategory] = useState("");
+  const [parentCategory, setParentCategory] = useState(null);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -63,17 +63,17 @@ function Categories({ swal }) {
 
   return (
     <Layout>
-      <h1>Categories</h1>
+      <h1>Категории</h1>
       <label>
         {editedCategory
-          ? `Edit category ${editedCategory.name}`
-          : "Create a new category"}
+          ? `Изменить категорию: ${editedCategory.name}`
+          : "Создать новую категорию"}
       </label>
       <form onSubmit={saveCategory} className="flex gap-1">
         <input
           className="mb-0"
           type="text"
-          placeholder={"category name"}
+          placeholder={"имя категории"}
           value={name}
           onChange={(ev) => setName(ev.target.value)}
         />
@@ -82,29 +82,29 @@ function Categories({ swal }) {
           value={parentCategory}
           onChange={(ev) => setParentCategory(ev.target.value)}
         >
-          <option value="">No parent category</option>
+          <option value={null}>нет родительской категории</option>
           {categories.map((category) => (
-            <option key={category._id} value={category._id}>
+            <option key={`option-${category._id}`} value={category._id}>
               {category.name}
             </option>
           ))}
         </select>
         <button type="submit" className="btn-primary py-1">
-          Save
+          Сохранить
         </button>
       </form>
       <table className="basic mt-2">
         <thead>
           <tr>
-            <td>Category name</td>
-            <td>Parent category</td>
+            <td>Название категории</td>
+            <td>Родительская категория</td>
             <td></td>
           </tr>
         </thead>
         <tbody>
           {categories.length > 0 &&
             categories.map((category) => (
-              <tr key={category.id}>
+              <tr key={`tr-${category._id}`}>
                 <td>{category.name}</td>
                 <td>{category?.parent?.name}</td>
                 <td>
