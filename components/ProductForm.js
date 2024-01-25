@@ -117,18 +117,20 @@ export default function ProductForm({
       </select>
       {propertiesToFill.length > 0 &&
         propertiesToFill.map((p, index) => (
-          <div key={`prop-${p.name}-${index}`} className="flex gap-1">
-            <div>{p.name}</div>
-            <select
-              value={productProperties[p.name]}
-              onChange={(ev) => setProductProp(p.name, ev.target.value)}
-            >
-              {p.values.map((v) => (
-                <option key={`${p.values}-${v}`} value={v}>
-                  {v}
-                </option>
-              ))}
-            </select>
+          <div key={`prop-${p.name}-${index}`} className="">
+            <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
+            <div>
+              <select
+                value={productProperties[p.name]}
+                onChange={(ev) => setProductProp(p.name, ev.target.value)}
+              >
+                {p.values.map((v) => (
+                  <option key={`${p.values}-${v}`} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         ))}
       <label>Фото </label>
@@ -140,7 +142,10 @@ export default function ProductForm({
         >
           {!!images?.length &&
             images.map((link) => (
-              <div key={link} className="h-24">
+              <div
+                key={link}
+                className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200"
+              >
                 <img src={link} alt="" className="rounded-lg" />
               </div>
             ))}
@@ -150,7 +155,7 @@ export default function ProductForm({
             <Spinner />
           </div>
         )}
-        <label className="w-24 h-24 text-center flex items-center justify-center text-sm gap-1 text-gray-500 rounded-lg bg-gray-200 cursor-pointer">
+        <label className="w-24 h-24 text-center flex flex-col items-center justify-center text-sm gap-1 text-primary rounded-sm cursor-pointer bg-white shadow-sm border border-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -165,7 +170,7 @@ export default function ProductForm({
               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
             />
           </svg>
-          <div>Загрузить</div>
+          <div>Добавить фото</div>
           <input type="file" onChange={uploadImages} className="hidden" />
         </label>
       </div>
