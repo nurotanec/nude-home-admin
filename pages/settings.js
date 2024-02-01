@@ -1,3 +1,9 @@
+import Layout from "@/components/Layout";
+
 export default function Settings() {
-    return (<></>)
+  return (
+    <Layout>
+      <h1>Настройки</h1>
+    </Layout>
+  );
 }

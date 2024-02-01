@@ -58,12 +58,12 @@ function Categories({ swal }) {
   async function deleteCategory(category) {
     swal
       .fire({
-        title: "Are you sure?",
-        text: `Do you want to delete category ${category.name}?`,
+        title: "Вы уверены?",
+        text: `Вы хотите удалить категорию ${category.name}?`,
         showCancelButton: true,
-        cancelButtonText: "Cancel",
+        cancelButtonText: "Отмена",
         confirmButtonColor: "#d55",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Да, удалить!",
         reverseButtons: true,
       })
       .then(async (result) => {

@@ -1,9 +1,12 @@
 import Layout from "@/components/Layout";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import axios from "axios";
 import dayjs from "dayjs";
-import "dayjs/locale/kk"; // load on demand
-dayjs.locale("kk"); // use Spanish locale globally
+import * as localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
+require("dayjs/locale/kk");
+dayjs.locale("kk");
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -18,10 +21,10 @@ export default function Orders() {
       <table className="basic">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Paid</th>
-            <th>Recipient</th>
-            <th>Products</th>
+            <th>Дата заказа</th>
+            <th>Оплачено</th>
+            <th>Клиент</th>
+            <th>Товары</th>
           </tr>
         </thead>
         <tbody>
@@ -30,13 +33,17 @@ export default function Orders() {
               <tr key={order._id}>
                 <td>{dayjs(order.createdAt).format("L LT")}</td>
                 <td className={order.paid ? "text-green-600" : "text-red-600"}>
-                  {order.paid ? "YES" : "NO"}
+                  {order.paid ? "ДА" : "НЕТ"}
                 </td>
                 <td>
                   {order.name} {order.email} <br />
                   {order.city} {order.postalCode} {order.country}
                   <br />
-                  {order.streetAddress}
+                  {order.streetAddress} <br />
+                  {order.phoneNumber} <br />
+                  {order.phoneNumber && (
+                    <Link href={`https://wa.me/${order.phoneNumber}`}></Link>
+                  )}
                 </td>
                 <td>
                   {order.line_items.map((l) => (
