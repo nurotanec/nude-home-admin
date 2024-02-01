@@ -190,7 +190,7 @@ function Categories({ swal }) {
         </div>
       </form>
       {!editedCategory && (
-        <table className="basic mt-2">
+        <table className="basic mt-4">
           <thead>
             <tr>
               <td>Название категории</td>

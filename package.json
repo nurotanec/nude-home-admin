@@ -12,6 +12,7 @@
     "@auth/mongodb-adapter": "^2.0.13",
     "@aws-sdk/client-s3": "^3.490.0",
     "axios": "^1.6.5",
+    "dayjs": "^1.11.10",
     "mime-types": "^2.1.35",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.0",
