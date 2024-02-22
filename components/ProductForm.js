@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
+import Sortable from "sortablejs";
 import { ReactSortable } from "react-sortablejs";
 
 export default function ProductForm({
@@ -28,6 +29,10 @@ export default function ProductForm({
   useEffect(() => {
     axios.get("/api/categories").then((result) => {
       setCategories(result.data);
+    });
+    Sortable.create(document.createElement("div"), {
+      group: "photos",
+      removeOnSpill: true,
     });
   }, []);
 
@@ -139,6 +144,7 @@ export default function ProductForm({
           list={images}
           setList={updateImagesOrder}
           className="flex flex-wrap gap-1"
+          group="photos"
         >
           {!!images?.length &&
             images.map((link) => (
