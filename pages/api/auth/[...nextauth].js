@@ -6,6 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 const adminEmails = [
   "suleimenaidar@gmail.com",
   "akniyet.amantayeva@alumni.nu.edu.kz",
+  "kapsatarova.gulzat@gmail.com",
 ];
 
 export const authOptions = {

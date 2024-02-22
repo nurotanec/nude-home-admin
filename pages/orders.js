@@ -11,10 +11,20 @@ dayjs.locale("kk");
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  function fetchOrders() {
     axios.get("/api/orders").then((response) => {
       setOrders(response.data);
     });
-  }, []);
+  }
+
+  async function deleteOrder(id) {
+    await axios.delete(`/api/orders?id=${id}`);
+    fetchOrders();
+  }
+
   return (
     <Layout>
       <h1>Заказы</h1>
@@ -25,6 +35,7 @@ export default function Orders() {
             <th>Оплачено</th>
             <th>Клиент</th>
             <th>Товары</th>
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody>
@@ -36,13 +47,20 @@ export default function Orders() {
                   {order.paid ? "ДА" : "НЕТ"}
                 </td>
                 <td>
-                  {order.name} {order.email} <br />
+                  {order.name} <br />
+                  {order.email} <br />
                   {order.city} {order.postalCode} {order.country}
                   <br />
                   {order.streetAddress} <br />
-                  {order.phoneNumber} <br />
+                  {order.phoneNumber}
                   {order.phoneNumber && (
-                    <Link href={`https://wa.me/${order.phoneNumber}`}></Link>
+                    <Link
+                      className="bg-green-600 text-white rounded-md"
+                      href={`whatsapp://send?phone=${order.phoneNumber}`}
+                      target="_self"
+                    >
+                      Написать whatsapp
+                    </Link>
                   )}
                 </td>
                 <td>
@@ -52,6 +70,19 @@ export default function Orders() {
                       <br />
                     </React.Fragment>
                   ))}
+                </td>
+                <td>
+                  <div className="flex flex-col gap-2">
+                    <button className="border border-blue-800 text-blue-800 rounded-md p-1">
+                      Оплачено
+                    </button>
+                    <button
+                      onClick={() => deleteOrder(order._id)}
+                      className="border border-red-700 text-red-700 rounded-md p-1"
+                    >
+                      Удалить
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
