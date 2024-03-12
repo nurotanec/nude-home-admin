@@ -90,7 +90,7 @@ export default function ProductForm({
   const propertiesToFill = [];
   if (categories.length > 0 && category) {
     let catInfo = categories.find(({ _id }) => _id === category);
-    propertiesToFill.push(...catInfo.properties);
+    if (catInfo) propertiesToFill.push(...catInfo.properties);
     while (catInfo?.parent?._id) {
       const parentCat = categories.find(
         ({ _id }) => _id === catInfo?.parent?._id
@@ -108,6 +108,7 @@ export default function ProductForm({
         name="name"
         placeholder="название"
         value={title}
+        autoFocus={true}
         onChange={(ev) => setTitle(ev.target.value)}
       />
       <label>Категория</label>
@@ -127,6 +128,7 @@ export default function ProductForm({
             <div>
               <select
                 value={productProperties[p.name]}
+                onFocus={(ev) => setProductProp(p.name, ev.target.value)}
                 onChange={(ev) => setProductProp(p.name, ev.target.value)}
               >
                 {p.values.map((v) => (

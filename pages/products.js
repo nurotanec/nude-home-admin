@@ -12,6 +12,11 @@ export default function Products() {
     });
   }, []);
 
+  async function handleCheckboxChange(ev, data) {
+    await axios.put(`/api/products`, { ...data, inStock: ev.target.checked });
+    console.log("done");
+  }
+
   return (
     <Layout>
       <Link className="btn-primary" href={"/products/new"}>
@@ -21,13 +26,23 @@ export default function Products() {
         <thead>
           <tr>
             <td>Название товара</td>
+            <td>В наличии</td>
             <td></td>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product._id}>
+            <tr key={product._id} className="hover:bg-gray-100">
               <td>{product.title}</td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={product.inStock}
+                  onChange={(ev) => {
+                    handleCheckboxChange(ev, product);
+                  }}
+                />
+              </td>
               <td>
                 <Link
                   className="btn-default"

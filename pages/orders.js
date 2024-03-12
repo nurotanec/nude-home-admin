@@ -65,17 +65,17 @@ export default function Orders() {
                 </td>
                 <td>
                   {order.line_items.map((l) => (
-                    <React.Fragment key={l.price_data?.product_data?.name}>
+                    <Link
+                      href={`/products/edit/${l.price_data?.product_data?.id}`}
+                      key={l.price_data?.product_data?.name}
+                    >
                       {l.price_data?.product_data?.name} x{l.quantity}
                       <br />
-                    </React.Fragment>
+                    </Link>
                   ))}
                 </td>
                 <td>
                   <div className="flex flex-col gap-2">
-                    <button className="border border-blue-800 text-blue-800 rounded-md p-1">
-                      Оплачено
-                    </button>
                     <button
                       onClick={() => deleteOrder(order._id)}
                       className="border border-red-700 text-red-700 rounded-md p-1"
