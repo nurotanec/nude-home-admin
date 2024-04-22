@@ -16,7 +16,7 @@ export default function ProductForm({
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
-  const [category, setCategory] = useState(assignedCategory);
+  const [category, setCategory] = useState(assignedCategory[0]);
   const [productProperties, setProductProperties] = useState(
     assignedProperties || {}
   );
@@ -38,12 +38,19 @@ export default function ProductForm({
 
   async function saveProduct(ev) {
     ev.preventDefault();
+    const categoryTree = [];
+    let node = categories.find(c => c._id === category);
+    categoryTree.push(node._id);
+    while (node.parent) {
+      node = node.parent;
+      categoryTree.push(node._id);
+    }
     const data = {
       title,
       description,
       price,
       images,
-      category,
+      category: categoryTree,
       properties: productProperties,
     };
 
